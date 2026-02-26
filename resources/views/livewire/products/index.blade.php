@@ -63,7 +63,7 @@
                             <flux:modal.close>
                                 <flux:button variant="ghost">{{ __('Cancel') }}</flux:button>
                             </flux:modal.close>
-                            <flux:button variant="danger" wire:click="deleteProduct({{ $product->id }})">{{ __('Delete') }}</flux:button>
+                            <flux:button variant="danger" wire:click="deleteProduct({{ $product->id }})" x-on:click="$flux.modal('delete-product-{{ $product->id }}').close()">{{ __('Delete') }}</flux:button>
                         </div>
                     </div>
                 </flux:modal>
