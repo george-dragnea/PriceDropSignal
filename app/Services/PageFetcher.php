@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
 
 class PageFetcher
@@ -22,8 +23,13 @@ class PageFetcher
         }
 
         $stderr = trim($result->errorOutput());
-        $lines = array_filter(explode("\n", $stderr));
+        $lines = array_values(array_filter(
+            explode("\n", $stderr),
+            fn ($line) => ! preg_match('/^Node\.js v[\d.]+/', trim($line)),
+        ));
         $errorLine = end($lines) ?: 'Browser fetch failed';
+
+        Log::warning('PageFetcher failed', ['url' => $url, 'error' => $errorLine]);
 
         return ['html' => null, 'error' => substr($errorLine, 0, 255)];
     }
