@@ -4,6 +4,7 @@ use App\Jobs\CheckProductUrlPrice;
 use App\Models\ProductUrl;
 use App\Notifications\PriceDropNotification;
 use App\Services\PageFetcher;
+use Illuminate\Queue\Middleware\RateLimited;
 use Illuminate\Support\Facades\Notification;
 
 function mockFetcher(string $html): void
@@ -102,4 +103,14 @@ test('job handles unparseable pages gracefully', function () {
     $url->refresh();
     expect($url->last_error)->toBe('Could not extract price');
     expect($url->latest_price_cents)->toBe(2999);
+});
+
+test('job has rate limited middleware keyed by domain', function () {
+    $url = ProductUrl::factory()->create(['url' => 'https://amazon.com/product/123']);
+
+    $job = new CheckProductUrlPrice($url);
+    $middleware = $job->middleware();
+
+    expect($middleware)->toHaveCount(1);
+    expect($middleware[0])->toBeInstanceOf(RateLimited::class);
 });

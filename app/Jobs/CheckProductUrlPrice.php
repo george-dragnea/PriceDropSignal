@@ -6,18 +6,31 @@ use App\Models\ProductUrl;
 use App\Notifications\PriceDropNotification;
 use App\Services\PageFetcher;
 use App\Services\PriceExtractor;
+use DateTime;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Middleware\RateLimited;
 
 class CheckProductUrlPrice implements ShouldQueue
 {
     use Queueable;
 
-    public int $tries = 2;
+    public int $maxExceptions = 2;
 
     public int $backoff = 30;
 
     public function __construct(public ProductUrl $productUrl) {}
+
+    /** @return array<int, object> */
+    public function middleware(): array
+    {
+        return [new RateLimited('price-checking')];
+    }
+
+    public function retryUntil(): DateTime
+    {
+        return now()->addHours(24)->toDateTime();
+    }
 
     public function handle(PriceExtractor $extractor, PageFetcher $fetcher): void
     {
