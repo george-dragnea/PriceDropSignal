@@ -1,4 +1,4 @@
-<div class="w-full max-w-6xl space-y-6">
+<div class="w-full max-w-6xl space-y-6" @if ($hasPendingChecks) wire:poll.5s @endif>
     {{-- Breadcrumb --}}
     <x-breadcrumbs :items="[
         ['label' => __('Products'), 'href' => route('products.index')],
@@ -88,6 +88,11 @@
                                                 {{ abs($change['percent']) }}%
                                             </div>
                                         @endif
+                                    @elseif (! $url->last_checked_at)
+                                        <div class="flex items-center gap-1.5 text-sm text-zinc-400">
+                                            <flux:icon name="arrow-path" class="size-3.5 animate-spin" />
+                                            {{ __('Checking...') }}
+                                        </div>
                                     @else
                                         <flux:text class="text-sm text-zinc-400">{{ __('No price') }}</flux:text>
                                     @endif
