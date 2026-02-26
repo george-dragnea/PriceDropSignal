@@ -30,6 +30,24 @@ test('extracts price from JSON-LD array of offers', function () {
     expect($this->extractor->extract($html))->toBe(1500);
 });
 
+test('extracts price from JSON-LD nested array of offers', function () {
+    $html = '<html><head><script type="application/ld+json">{"@type":"Product","offers":[[{"@type":"Offer","price":699.99},{"@type":"Offer","price":699.99}]]}</script></head><body></body></html>';
+
+    expect($this->extractor->extract($html))->toBe(69999);
+});
+
+test('extracts price from JSON-LD ProductGroup with hasVariant', function () {
+    $html = '<html><head><script type="application/ld+json">{"@type":"ProductGroup","@context":"https://schema.org","hasVariant":[{"@type":"Product","name":"Test","offers":{"@type":"Offer","price":621.9,"priceCurrency":"RON"}}]}</script></head><body></body></html>';
+
+    expect($this->extractor->extract($html))->toBe(62190);
+});
+
+test('extracts price from JSON-LD top-level array with ProductGroup', function () {
+    $html = '<html><head><script type="application/ld+json">[{"@type":"ProductGroup","hasVariant":[{"@type":"Product","offers":{"@type":"Offer","price":563.92,"priceCurrency":"RON"}}]}]</script></head><body></body></html>';
+
+    expect($this->extractor->extract($html))->toBe(56392);
+});
+
 test('extracts price from Open Graph meta tags', function () {
     $html = '<html><head><meta property="og:price:amount" content="39.99"></head><body></body></html>';
 

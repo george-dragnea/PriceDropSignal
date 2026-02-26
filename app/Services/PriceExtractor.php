@@ -52,6 +52,20 @@ class PriceExtractor
      */
     protected function findPriceInJsonLd(array $data): ?int
     {
+        // Handle top-level arrays (e.g. [{"@type": "ProductGroup", ...}])
+        if (isset($data[0]) && is_array($data[0])) {
+            foreach ($data as $item) {
+                if (is_array($item)) {
+                    $price = $this->findPriceInJsonLd($item);
+                    if ($price !== null) {
+                        return $price;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         // Handle @graph arrays
         if (isset($data['@graph']) && is_array($data['@graph'])) {
             foreach ($data['@graph'] as $item) {
@@ -69,6 +83,18 @@ class PriceExtractor
         // Direct Product type with offers
         if ($type === 'Product' && isset($data['offers'])) {
             return $this->extractPriceFromOffers($data['offers']);
+        }
+
+        // ProductGroup with hasVariant (e.g. epantofi.ro)
+        if ($type === 'ProductGroup' && isset($data['hasVariant']) && is_array($data['hasVariant'])) {
+            foreach ($data['hasVariant'] as $variant) {
+                if (is_array($variant)) {
+                    $price = $this->findPriceInJsonLd($variant);
+                    if ($price !== null) {
+                        return $price;
+                    }
+                }
+            }
         }
 
         // Direct Offer type
@@ -91,7 +117,16 @@ class PriceExtractor
 
         // Array of offers — take the first valid price
         foreach ($offers as $offer) {
-            if (is_array($offer) && (isset($offer['price']) || isset($offer['lowPrice']))) {
+            if (! is_array($offer)) {
+                continue;
+            }
+
+            // Handle nested array of offers (e.g. [[{offer1}, {offer2}]])
+            if (isset($offer[0]) && is_array($offer[0])) {
+                return $this->extractPriceFromOffers($offer);
+            }
+
+            if (isset($offer['price']) || isset($offer['lowPrice'])) {
                 $price = $this->parsePriceToCents((string) ($offer['price'] ?? $offer['lowPrice']));
                 if ($price !== null) {
                     return $price;
