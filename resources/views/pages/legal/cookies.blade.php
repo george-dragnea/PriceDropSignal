@@ -19,10 +19,10 @@
             information to the site operator.
         </p>
 
-        <h2>3. Cookies We Use</h2>
+        <h2>3. Strictly Necessary Cookies</h2>
         <p>
-            PriceDropSignal uses only <strong>strictly necessary cookies</strong> that are essential for the Service to
-            function. We do <strong>not</strong> use any analytics, advertising, or third-party tracking cookies.
+            The following cookies are essential for the Service to function. They do not require your consent under the
+            ePrivacy Directive because they are strictly necessary for providing the Service you have requested.
         </p>
 
         <table>
@@ -56,33 +56,97 @@
             </tbody>
         </table>
 
-        <h2>4. Cookies We Do Not Use</h2>
+        <h2>4. Analytics Cookies (Consent Required)</h2>
+        <p>
+            We use <strong>Google Analytics</strong> to understand how visitors interact with the Service, which pages
+            are most popular, and how the Service can be improved. These cookies are <strong>only set after you give
+            explicit consent</strong> via our cookie consent banner. If you decline, no analytics cookies are set and
+            no data is sent to Google.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Cookie Name</th>
+                    <th>Purpose</th>
+                    <th>Provider</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>_ga</code></td>
+                    <td>Distinguishes unique visitors by assigning a randomly generated identifier. Used to calculate visitor, session, and campaign data for analytics reports.</td>
+                    <td>Google Analytics</td>
+                    <td>2 years</td>
+                </tr>
+                <tr>
+                    <td><code>_ga_G-3SYC9TS8ZY</code></td>
+                    <td>Maintains session state for Google Analytics 4. Records page views and interactions during your browsing session.</td>
+                    <td>Google Analytics</td>
+                    <td>2 years</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            Google Analytics collects data such as pages visited, time spent on pages, browser type, and general
+            geographic region (country/city level). IP anonymization is enabled, so your full IP address is not stored
+            by Google. For more information, see
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>.
+            You can also install the
+            <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics Opt-out Browser Add-on</a>
+            to prevent Google Analytics from collecting your data across all websites.
+        </p>
+
+        <h2>5. Cookies We Do Not Use</h2>
         <p>For transparency, we confirm that we do <strong>not</strong> use:</p>
         <ul>
-            <li><strong>Analytics cookies</strong> (e.g., Google Analytics, Matomo, Plausible);</li>
             <li><strong>Advertising or remarketing cookies</strong> (e.g., Google Ads, Facebook Pixel);</li>
             <li><strong>Social media cookies</strong> (e.g., Facebook, Twitter, LinkedIn widgets);</li>
-            <li><strong>Third-party tracking cookies</strong> of any kind.</li>
+            <li><strong>Third-party tracking cookies</strong> beyond the analytics cookies described above.</li>
         </ul>
 
-        <h2>5. Third-Party Services</h2>
+        <h2>6. Third-Party Services</h2>
         <p>
             We use <strong>Bunny Fonts</strong> (bunny.net) to serve web fonts. Bunny Fonts is an EU-based,
             GDPR-compliant font delivery service that is specifically designed as a privacy-friendly alternative. It does
             not set cookies and does not track or log visitors.
         </p>
 
-        <h2>6. Legal Basis</h2>
+        <h2>7. Legal Basis</h2>
         <p>
             Under the ePrivacy Directive (Directive 2002/58/EC as amended by Directive 2009/136/EC) and its
-            implementation in Romanian law (Law No. 506/2004), strictly necessary cookies do not require user consent.
-            All cookies used by PriceDropSignal fall within this exemption because they are essential for the Service to
-            function and are explicitly requested by you (e.g., logging in, submitting forms).
+            implementation in Romanian law (Law No. 506/2004):
+        </p>
+        <ul>
+            <li>
+                <strong>Strictly necessary cookies</strong> (section 3) do not require user consent because they are
+                essential for the Service to function and are explicitly requested by you (e.g., logging in, submitting
+                forms).
+            </li>
+            <li>
+                <strong>Analytics cookies</strong> (section 4) require your explicit consent under both the ePrivacy
+                Directive and the GDPR (Art. 6(1)(a)). They are only loaded after you click "Accept" on our cookie
+                consent banner. You may withdraw your consent at any time.
+            </li>
+        </ul>
+
+        <h2>8. How to Manage Cookies</h2>
+        <h3>Cookie Consent Banner</h3>
+        <p>
+            When you first visit the Service, a cookie consent banner appears at the bottom of the page. You can choose
+            to <strong>Accept</strong> (enables analytics cookies) or <strong>Decline</strong> (no analytics cookies are
+            set). Your choice is saved in your browser's local storage and the banner will not appear again.
+        </p>
+        <p>
+            To change your preference, clear your browser's local storage for this site (or clear all site data in your
+            browser settings), and the consent banner will appear again on your next visit.
         </p>
 
-        <h2>7. How to Manage Cookies</h2>
+        <h3>Browser Settings</h3>
         <p>
-            You can control and manage cookies through your browser settings. Most browsers allow you to:
+            You can also control and manage cookies through your browser settings. Most browsers allow you to:
         </p>
         <ul>
             <li>View which cookies are stored on your device;</li>
@@ -102,14 +166,13 @@
             <li><strong>Edge:</strong> Settings &rarr; Cookies and site permissions &rarr; Manage and delete cookies</li>
         </ul>
 
-        <h2>8. Changes to This Policy</h2>
+        <h2>9. Changes to This Policy</h2>
         <p>
             We may update this Cookies Policy from time to time, for example if we introduce new features that require
-            additional cookies. Any changes will be reflected on this page with an updated "Last updated" date. If we
-            begin using non-essential cookies in the future, we will obtain your consent before setting them.
+            additional cookies. Any changes will be reflected on this page with an updated "Last updated" date.
         </p>
 
-        <h2>9. Contact</h2>
+        <h2>10. Contact</h2>
         <p>If you have any questions about our use of cookies, please contact us:</p>
         <ul>
             <li>Email: <a href="mailto:contact@pricedropsignal.com">contact@pricedropsignal.com</a></li>

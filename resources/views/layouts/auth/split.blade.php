@@ -53,6 +53,7 @@
                 </div>
             </div>
         </div>
+        @include('partials.cookie-consent')
         @fluxScripts
     </body>
 </html>
