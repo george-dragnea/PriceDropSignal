@@ -1,18 +1,22 @@
 <x-layouts::app :title="__('Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+    <div class="w-full max-w-4xl space-y-6">
+        <flux:heading size="xl">{{ __('Dashboard') }}</flux:heading>
+
+        <div class="grid gap-4 md:grid-cols-2">
+            <div class="rounded-xl border border-neutral-200 p-6 dark:border-neutral-700">
+                <flux:text class="text-sm">{{ __('Products Tracked') }}</flux:text>
+                <flux:heading size="xl" class="mt-1">{{ auth()->user()->products()->count() }}</flux:heading>
             </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+            <div class="rounded-xl border border-neutral-200 p-6 dark:border-neutral-700">
+                <flux:text class="text-sm">{{ __('URLs Monitored') }}</flux:text>
+                <flux:heading size="xl" class="mt-1">{{ auth()->user()->products()->withCount('urls')->get()->sum('urls_count') }}</flux:heading>
             </div>
         </div>
-        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+
+        <div class="flex">
+            <flux:button variant="primary" icon="tag" :href="route('products.index')" wire:navigate>
+                {{ __('Manage Products') }}
+            </flux:button>
         </div>
     </div>
 </x-layouts::app>

@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Jobs;
+
+use App\Models\ProductUrl;
+use App\Notifications\PriceDropNotification;
+use App\Services\PageFetcher;
+use App\Services\PriceExtractor;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+
+class CheckProductUrlPrice implements ShouldQueue
+{
+    use Queueable;
+
+    public int $tries = 2;
+
+    public int $backoff = 30;
+
+    public function __construct(public ProductUrl $productUrl) {}
+
+    public function handle(PriceExtractor $extractor, PageFetcher $fetcher): void
+    {
+        $result = $fetcher->fetch($this->productUrl->url);
+
+        if ($result['html'] === null) {
+            $this->productUrl->update([
+                'last_checked_at' => now(),
+                'last_error' => $result['error'],
+            ]);
+
+            return;
+        }
+
+        $priceCents = $extractor->extract($result['html']);
+
+        if ($priceCents === null) {
+            $this->productUrl->update([
+                'last_checked_at' => now(),
+                'last_error' => 'Could not extract price',
+            ]);
+
+            return;
+        }
+
+        $previousPriceCents = $this->productUrl->latest_price_cents;
+
+        $this->productUrl->priceChecks()->create([
+            'price_cents' => $priceCents,
+            'checked_at' => now(),
+        ]);
+
+        $this->productUrl->update([
+            'latest_price_cents' => $priceCents,
+            'last_checked_at' => now(),
+            'last_error' => null,
+        ]);
+
+        if ($previousPriceCents !== null && $priceCents < $previousPriceCents) {
+            $this->productUrl->product->user->notify(
+                new PriceDropNotification($this->productUrl, $previousPriceCents, $priceCents)
+            );
+        }
+    }
+}
