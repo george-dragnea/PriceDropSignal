@@ -77,9 +77,9 @@
                     @if ($product->urls_min_latest_price_cents)
                         <flux:text class="mb-2 font-mono text-sm">
                             @if ($product->urls_min_latest_price_cents === $product->urls_max_latest_price_cents)
-                                ${{ number_format($product->urls_min_latest_price_cents / 100, 2) }}
+                                {{ number_format($product->urls_min_latest_price_cents / 100, 2) }}
                             @else
-                                ${{ number_format($product->urls_min_latest_price_cents / 100, 2) }} &ndash; ${{ number_format($product->urls_max_latest_price_cents / 100, 2) }}
+                                {{ number_format($product->urls_min_latest_price_cents / 100, 2) }} &ndash; {{ number_format($product->urls_max_latest_price_cents / 100, 2) }}
                             @endif
                         </flux:text>
                     @else
