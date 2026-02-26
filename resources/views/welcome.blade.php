@@ -44,7 +44,7 @@
 
         {{-- Hero Section --}}
         <section class="relative overflow-hidden bg-gradient-to-b from-brand-50 to-white dark:from-brand-950/20 dark:to-zinc-950">
-            <div class="mx-auto max-w-6xl px-6 py-24 lg:py-32">
+            <div class="mx-auto max-w-6xl px-6 py-20 lg:py-28">
                 <div class="mx-auto max-w-3xl text-center">
                     <span class="inline-flex items-center rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-700 dark:bg-brand-900/40 dark:text-brand-300">
                         Free to use &mdash; No credit card required
@@ -88,7 +88,7 @@
         </section>
 
         {{-- Features Section --}}
-        <section id="features" class="py-20 lg:py-28">
+        <section id="features" class="py-16 lg:py-24">
             <div class="mx-auto max-w-6xl px-6">
                 <div class="mx-auto max-w-2xl text-center">
                     <h2 class="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
@@ -99,11 +99,11 @@
                     </p>
                 </div>
 
-                <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                     {{-- Feature: Price Tracking --}}
-                    <div class="rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
-                        <div class="flex size-12 items-center justify-center rounded-lg bg-brand-100 dark:bg-brand-900/30">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-brand-600 dark:text-brand-400">
+                    <div class="rounded-xl border border-zinc-200 p-6 transition-colors hover:border-brand-300 dark:border-zinc-800 dark:hover:border-brand-700">
+                        <div class="flex size-14 items-center justify-center rounded-xl bg-brand-100 dark:bg-brand-900/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7 text-brand-600 dark:text-brand-400">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
                             </svg>
                         </div>
@@ -114,9 +114,9 @@
                     </div>
 
                     {{-- Feature: Instant Alerts --}}
-                    <div class="rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
-                        <div class="flex size-12 items-center justify-center rounded-lg bg-drop-100 dark:bg-orange-900/30">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-drop-600 dark:text-drop-400">
+                    <div class="rounded-xl border border-zinc-200 p-6 transition-colors hover:border-drop-300 dark:border-zinc-800 dark:hover:border-orange-700">
+                        <div class="flex size-14 items-center justify-center rounded-xl bg-drop-100 dark:bg-orange-900/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7 text-drop-600 dark:text-drop-400">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
                             </svg>
                         </div>
@@ -127,9 +127,9 @@
                     </div>
 
                     {{-- Feature: Multi-Store --}}
-                    <div class="rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
-                        <div class="flex size-12 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-600 dark:text-blue-400">
+                    <div class="rounded-xl border border-zinc-200 p-6 transition-colors hover:border-blue-300 dark:border-zinc-800 dark:hover:border-blue-700">
+                        <div class="flex size-14 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7 text-blue-600 dark:text-blue-400">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5a17.92 17.92 0 0 1-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
                             </svg>
                         </div>
@@ -140,9 +140,9 @@
                     </div>
 
                     {{-- Feature: Price History --}}
-                    <div class="rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
-                        <div class="flex size-12 items-center justify-center rounded-lg bg-violet-100 dark:bg-violet-900/30">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-violet-600 dark:text-violet-400">
+                    <div class="rounded-xl border border-zinc-200 p-6 transition-colors hover:border-violet-300 dark:border-zinc-800 dark:hover:border-violet-700">
+                        <div class="flex size-14 items-center justify-center rounded-xl bg-violet-100 dark:bg-violet-900/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7 text-violet-600 dark:text-violet-400">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
                         </div>
@@ -156,7 +156,7 @@
         </section>
 
         {{-- How It Works --}}
-        <section id="how-it-works" class="bg-zinc-50 py-20 dark:bg-zinc-900/50 lg:py-28">
+        <section id="how-it-works" class="bg-zinc-50 py-16 dark:bg-zinc-900/50 lg:py-24">
             <div class="mx-auto max-w-6xl px-6">
                 <div class="mx-auto max-w-2xl text-center">
                     <h2 class="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
@@ -202,7 +202,7 @@
         </section>
 
         {{-- Social Proof / Stats --}}
-        <section class="py-20 lg:py-28">
+        <section class="py-16 lg:py-24">
             <div class="mx-auto max-w-6xl px-6">
                 <div class="grid gap-8 text-center sm:grid-cols-3">
                     <div>
@@ -231,7 +231,7 @@
         </section>
 
         {{-- Final CTA --}}
-        <section class="bg-brand-600 py-20 dark:bg-brand-700 lg:py-28">
+        <section class="bg-brand-600 py-16 dark:bg-brand-700 lg:py-24">
             <div class="mx-auto max-w-3xl px-6 text-center">
                 <h2 class="text-3xl font-bold text-white sm:text-4xl">
                     Ready to Start Saving?

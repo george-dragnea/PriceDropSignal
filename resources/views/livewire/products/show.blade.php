@@ -42,7 +42,7 @@
         <div class="space-y-4">
             @foreach ($urls as $url)
                 @php $change = $url->priceChangeFromPrevious(); @endphp
-                <div class="rounded-xl border border-neutral-200 dark:border-neutral-700"
+                <div class="rounded-xl border border-neutral-200 transition-colors hover:border-neutral-300 dark:border-neutral-700 dark:hover:border-neutral-600"
                      wire:key="url-{{ $url->id }}"
                      x-data="{ expanded: false }">
                     {{-- Card main content --}}
@@ -76,11 +76,10 @@
                                 <div class="text-right">
                                     @if ($url->formattedPrice())
                                         <span class="font-mono text-lg font-semibold">${{ $url->formattedPrice() }}</span>
-                                        @if ($change)
+                                        @if ($change && $change['direction'] !== 'same')
                                             <div class="flex items-center justify-end gap-1 text-xs
                                                 {{ $change['direction'] === 'down' ? 'text-green-600 dark:text-green-400' : '' }}
-                                                {{ $change['direction'] === 'up' ? 'text-red-600 dark:text-red-400' : '' }}
-                                                {{ $change['direction'] === 'same' ? 'text-zinc-400' : '' }}">
+                                                {{ $change['direction'] === 'up' ? 'text-red-600 dark:text-red-400' : '' }}">
                                                 @if ($change['direction'] === 'down')
                                                     <flux:icon name="arrow-down" variant="micro" class="size-3" />
                                                 @elseif ($change['direction'] === 'up')
@@ -122,14 +121,15 @@
                                         $checks = $url->priceChecks->reverse();
                                         $maxPrice = $checks->max('price_cents');
                                         $minPrice = $checks->min('price_cents');
-                                        $range = max($maxPrice - $minPrice, 1);
+                                        $range = $maxPrice - $minPrice;
+                                        $isFlat = $range === 0;
                                     @endphp
-                                    <div class="flex items-end gap-px" style="height: 60px;">
+                                    <div class="flex items-end gap-0.5 rounded-lg bg-zinc-50 p-2 dark:bg-zinc-800/50" style="height: 80px;">
                                         @foreach ($checks as $check)
                                             @php
-                                                $heightPercent = (($check->price_cents - $minPrice) / $range) * 80 + 20;
+                                                $heightPercent = $isFlat ? 50 : (($check->price_cents - $minPrice) / $range) * 70 + 25;
                                             @endphp
-                                            <div class="flex-1 rounded-t bg-brand-500/60 transition-all hover:bg-brand-600 dark:bg-brand-400/50 dark:hover:bg-brand-400"
+                                            <div class="flex-1 rounded-sm {{ $isFlat ? 'bg-zinc-300 dark:bg-zinc-600' : 'bg-brand-500/70 hover:bg-brand-600 dark:bg-brand-400/60 dark:hover:bg-brand-400' }} transition-all"
                                                  style="height: {{ $heightPercent }}%"
                                                  title="${{ $check->formattedPrice() }} - {{ $check->checked_at->format('M d, H:i') }}">
                                             </div>

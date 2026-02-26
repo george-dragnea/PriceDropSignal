@@ -141,7 +141,7 @@
 
         {{-- Quick add + recent activity --}}
         <div class="grid gap-6 lg:grid-cols-2">
-            <div class="rounded-xl border border-neutral-200 p-5 dark:border-neutral-700">
+            <div class="flex flex-col rounded-xl border border-neutral-200 p-5 dark:border-neutral-700">
                 <flux:heading size="lg" class="mb-4">{{ __('Quick Add Product') }}</flux:heading>
                 <form wire:submit="addProduct" class="flex flex-col gap-3 sm:flex-row sm:items-end">
                     <div class="flex-1">
@@ -151,26 +151,28 @@
                         {{ __('Add') }}
                     </flux:button>
                 </form>
-                <div class="mt-3">
+                <div class="mt-auto pt-4">
                     <flux:button variant="ghost" icon="tag" size="sm" :href="route('products.index')" wire:navigate>
                         {{ __('View all products') }}
                     </flux:button>
                 </div>
             </div>
 
-            <div class="rounded-xl border border-neutral-200 p-5 dark:border-neutral-700">
+            <div class="flex flex-col rounded-xl border border-neutral-200 p-5 dark:border-neutral-700">
                 <flux:heading size="lg" class="mb-4">{{ __('Recent Activity') }}</flux:heading>
                 @if ($recentActivity->isEmpty())
                     <flux:text class="text-sm text-zinc-500">{{ __('No activity yet. Add products and URLs to start tracking.') }}</flux:text>
                 @else
-                    <div class="space-y-3">
+                    <div class="max-h-72 space-y-3 overflow-y-auto">
                         @foreach ($recentActivity as $check)
                             <div class="flex items-center gap-3 text-sm">
                                 <div class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800">
                                     <flux:icon name="currency-dollar" variant="micro" class="size-4 text-zinc-500" />
                                 </div>
                                 <div class="min-w-0 flex-1">
-                                    <flux:text class="truncate text-sm">{{ $check->productUrl->product->name }}</flux:text>
+                                    <flux:text class="truncate text-sm">
+                                        {{ Str::limit(parse_url($check->productUrl->url, PHP_URL_HOST), 30) }}
+                                    </flux:text>
                                     <flux:text class="text-xs text-zinc-400">
                                         ${{ $check->formattedPrice() }} &middot; {{ $check->checked_at->diffForHumans() }}
                                     </flux:text>

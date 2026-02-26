@@ -48,17 +48,18 @@
     @else
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($products as $product)
-                <div class="group relative rounded-xl border border-neutral-200 p-5 transition-colors hover:border-neutral-300 dark:border-neutral-700 dark:hover:border-neutral-600"
-                     wire:key="product-{{ $product->id }}">
+                <a href="{{ route('products.show', $product) }}" wire:navigate wire:key="product-{{ $product->id }}"
+                   class="group block rounded-xl border border-neutral-200 p-5 transition-colors hover:border-brand-300 hover:bg-zinc-50/50 dark:border-neutral-700 dark:hover:border-brand-700 dark:hover:bg-zinc-800/30">
                     {{-- Top row: name + delete --}}
                     <div class="mb-3 flex items-start justify-between">
-                        <a href="{{ route('products.show', $product) }}" class="font-semibold hover:underline" wire:navigate>
+                        <span class="font-semibold text-zinc-900 group-hover:text-brand-600 dark:text-zinc-100 dark:group-hover:text-brand-400">
                             {{ $product->name }}
-                        </a>
+                        </span>
                         <flux:modal.trigger name="delete-product-{{ $product->id }}">
                             <flux:button variant="ghost" size="sm" icon="trash"
                                 class="relative z-10 opacity-0 transition-opacity group-hover:opacity-100"
-                                :aria-label="__('Delete :name', ['name' => $product->name])" />
+                                :aria-label="__('Delete :name', ['name' => $product->name])"
+                                x-on:click.prevent.stop />
                         </flux:modal.trigger>
                     </div>
 
@@ -89,10 +90,7 @@
                     <flux:text class="text-xs text-zinc-400">
                         {{ __('Added') }} {{ $product->created_at->diffForHumans() }}
                     </flux:text>
-
-                    {{-- Clickable card overlay --}}
-                    <a href="{{ route('products.show', $product) }}" wire:navigate class="absolute inset-0 rounded-xl" aria-hidden="true"></a>
-                </div>
+                </a>
             @endforeach
         </div>
 
