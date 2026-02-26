@@ -1,7 +1,79 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        @include('partials.head')
+        @include('partials.head', [
+            'description' => 'Track prices across any online store and get instant email alerts when prices drop. Free price monitoring tool for smart shoppers — never overpay again.',
+        ])
+
+        {{-- JSON-LD Structured Data --}}
+        <script type="application/ld+json">{!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'WebSite',
+            'name' => config('app.name', 'PriceDropSignal'),
+            'url' => url('/'),
+            'description' => 'Track prices across any online store and get instant email alerts when prices drop.',
+            'potentialAction' => [
+                '@type' => 'RegisterAction',
+                'target' => url('/register'),
+                'name' => 'Create Free Account',
+            ],
+        ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}</script>
+        <script type="application/ld+json">{!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => 'GD CLOUD COMPANY S.R.L.',
+            'url' => url('/'),
+            'logo' => asset('android-chrome-512x512.png'),
+            'contactPoint' => [
+                '@type' => 'ContactPoint',
+                'email' => 'contact@pricedropsignal.com',
+                'contactType' => 'customer support',
+            ],
+        ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}</script>
+        <script type="application/ld+json">{!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'SoftwareApplication',
+            'name' => config('app.name', 'PriceDropSignal'),
+            'url' => url('/'),
+            'applicationCategory' => 'ShoppingApplication',
+            'operatingSystem' => 'Web',
+            'description' => 'Free price tracking tool that monitors prices across any online store and sends email alerts when prices drop.',
+            'offers' => [
+                '@type' => 'Offer',
+                'price' => '0',
+                'priceCurrency' => 'USD',
+            ],
+        ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}</script>
+        <script type="application/ld+json">{!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            'mainEntity' => [
+                [
+                    '@type' => 'Question',
+                    'name' => 'How does PriceDropSignal work?',
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => 'Add a product by pasting its URL from any online store. Our system automatically checks prices and records every change over time. When the price drops, you get an instant email notification.',
+                    ],
+                ],
+                [
+                    '@type' => 'Question',
+                    'name' => 'Is PriceDropSignal free to use?',
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => 'Yes, PriceDropSignal is 100% free to use. You can track unlimited products across any online store at no cost.',
+                    ],
+                ],
+                [
+                    '@type' => 'Question',
+                    'name' => 'Which stores does PriceDropSignal support?',
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => 'PriceDropSignal works with any online store. Just paste the product URL and we handle the rest — no store restrictions.',
+                    ],
+                ],
+            ],
+        ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}</script>
     </head>
     <body class="min-h-screen bg-white text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
 

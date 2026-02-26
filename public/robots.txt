@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /dashboard
+Disallow: /products
+Disallow: /settings
+
+Sitemap: https://pricedropsignal.com/sitemap.xml

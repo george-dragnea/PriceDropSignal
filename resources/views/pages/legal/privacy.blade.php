@@ -1,4 +1,4 @@
-<x-layouts.legal :title="'Privacy Policy'">
+<x-layouts.legal :title="'Privacy Policy'" :description="'Learn how PriceDropSignal protects your privacy and personal data. Details on data collection, usage, your GDPR rights, and how to contact us.'">
 
     <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Privacy Policy</h1>
     <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Last updated: {{ date('F j, Y') }}</p>

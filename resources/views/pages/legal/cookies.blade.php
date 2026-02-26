@@ -1,4 +1,4 @@
-<x-layouts.legal :title="'Cookies Policy'">
+<x-layouts.legal :title="'Cookies Policy'" :description="'Understand how PriceDropSignal uses cookies. Learn about the types of cookies we use and how to manage your cookie preferences.'">
 
     <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Cookies Policy</h1>
     <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Last updated: {{ date('F j, Y') }}</p>

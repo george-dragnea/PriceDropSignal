@@ -1,4 +1,4 @@
-<x-layouts.legal :title="'Terms and Conditions'">
+<x-layouts.legal :title="'Terms and Conditions'" :description="'Read the Terms and Conditions for PriceDropSignal, a free price tracking service operated by GD CLOUD COMPANY S.R.L. in Romania.'">
 
     <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Terms and Conditions</h1>
     <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Last updated: {{ date('F j, Y') }}</p>
