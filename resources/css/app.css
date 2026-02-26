@@ -23,16 +23,39 @@
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
+    /* Brand: Emerald (savings/trust) */
+    --color-brand-50:  #ecfdf5;
+    --color-brand-100: #d1fae5;
+    --color-brand-200: #a7f3d0;
+    --color-brand-300: #6ee7b7;
+    --color-brand-400: #34d399;
+    --color-brand-500: #10b981;
+    --color-brand-600: #059669;
+    --color-brand-700: #047857;
+    --color-brand-800: #065f46;
+    --color-brand-900: #064e3b;
+    --color-brand-950: #022c22;
+
+    /* Drop: Orange (alerts/notifications) */
+    --color-drop-50:  #fff7ed;
+    --color-drop-100: #ffedd5;
+    --color-drop-200: #fed7aa;
+    --color-drop-300: #fdba74;
+    --color-drop-400: #fb923c;
+    --color-drop-500: #f97316;
+    --color-drop-600: #ea580c;
+    --color-drop-700: #c2410c;
+
+    --color-accent: var(--color-brand-600);
+    --color-accent-content: var(--color-brand-600);
     --color-accent-foreground: var(--color-white);
 }
 
 @layer theme {
     .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
+        --color-accent: var(--color-brand-400);
+        --color-accent-content: var(--color-brand-400);
+        --color-accent-foreground: var(--color-zinc-900);
     }
 }
 
@@ -64,3 +87,21 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+/* Navigation progress bar for wire:navigate transitions */
+[data-navigate-loading] body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--color-brand-500);
+    z-index: 9999;
+    animation: navigate-progress 2s ease-in-out infinite;
+}
+
+@keyframes navigate-progress {
+    0% { width: 0; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+}

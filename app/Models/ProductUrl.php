@@ -40,4 +40,27 @@ class ProductUrl extends Model
 
         return number_format($this->latest_price_cents / 100, 2);
     }
+
+    /**
+     * @return array{diff_cents: int, percent: float, direction: string}|null
+     */
+    public function priceChangeFromPrevious(): ?array
+    {
+        $checks = $this->priceChecks()->latest('checked_at')->limit(2)->get();
+
+        if ($checks->count() < 2) {
+            return null;
+        }
+
+        $current = $checks->first();
+        $previous = $checks->last();
+        $diffCents = $current->price_cents - $previous->price_cents;
+        $percent = ($diffCents / $previous->price_cents) * 100;
+
+        return [
+            'diff_cents' => $diffCents,
+            'percent' => round($percent, 1),
+            'direction' => $diffCents < 0 ? 'down' : ($diffCents > 0 ? 'up' : 'same'),
+        ];
+    }
 }
