@@ -9,7 +9,7 @@
         <nav class="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/80">
             <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
                 <a href="{{ route('home') }}" class="flex items-center gap-2">
-                    <x-app-logo-icon class="size-8 text-brand-500" />
+                    <x-app-logo-icon class="size-8 rounded-md" />
                     <span class="text-lg font-semibold text-zinc-900 dark:text-white">
                         {{ config('app.name', 'PriceDropSignal') }}
                     </span>
@@ -47,7 +47,7 @@
             <div class="mx-auto max-w-6xl px-6 py-20 lg:py-28">
                 <div class="mx-auto max-w-3xl text-center">
                     <span class="inline-flex items-center rounded-full bg-brand-100 px-3 py-1 text-xs font-medium text-brand-700 dark:bg-brand-900/40 dark:text-brand-300">
-                        Free to use &mdash; No credit card required
+                        Free to use
                     </span>
 
                     <h1 class="mt-6 text-4xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-5xl lg:text-6xl">
@@ -220,9 +220,7 @@
                 </div>
 
                 <div class="mt-16 rounded-2xl border border-brand-200 bg-brand-50 p-8 text-center dark:border-brand-800 dark:bg-brand-950/20 sm:p-12">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mx-auto size-10 text-brand-500">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
+                    <x-app-logo-icon class="mx-auto size-10 rounded-md" />
                     <blockquote class="mt-4 text-xl font-medium text-zinc-800 dark:text-zinc-200 sm:text-2xl">
                         &ldquo;Stop paying full price. Let PriceDropSignal watch the prices so you don&rsquo;t have to.&rdquo;
                     </blockquote>
@@ -263,7 +261,7 @@
             <div class="mx-auto max-w-6xl px-6">
                 <div class="flex flex-col items-center justify-between gap-6 sm:flex-row">
                     <div class="flex items-center gap-2">
-                        <x-app-logo-icon class="size-6 text-brand-500" />
+                        <x-app-logo-icon class="size-6 rounded-md" />
                         <span class="font-semibold text-zinc-900 dark:text-white">
                             {{ config('app.name', 'PriceDropSignal') }}
                         </span>
