@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Products;
 
+use App\Jobs\CheckProductUrlPrice;
 use App\Models\Product;
 use Flux\Flux;
 use Illuminate\Support\Facades\Auth;
@@ -30,13 +31,15 @@ class Show extends Component
             'newUrl' => ['required', 'url', 'max:2048'],
         ]);
 
-        $this->product->urls()->create(['url' => $this->newUrl]);
+        $productUrl = $this->product->urls()->create(['url' => $this->newUrl]);
+
+        CheckProductUrlPrice::dispatch($productUrl);
 
         $this->reset('newUrl');
 
         Flux::toast(
             heading: __('URL added'),
-            text: __('The URL has been added and will be checked soon.'),
+            text: __('The URL has been added. Checking price now...'),
             variant: 'success',
         );
     }
@@ -54,14 +57,17 @@ class Show extends Component
 
     public function render(): View
     {
+        $urls = $this->product->urls()
+            ->with(['priceChecks' => fn ($q) => $q->latest('checked_at')->limit(30)])
+            ->latest()
+            ->get();
+
         return view('livewire.products.show', [
-            'urls' => $this->product->urls()
-                ->with(['priceChecks' => fn ($q) => $q->latest('checked_at')->limit(30)])
-                ->latest()
-                ->get(),
+            'urls' => $urls,
             'urlCount' => $this->product->urls()->count(),
             'okCount' => $this->product->urls()->whereNull('last_error')->whereNotNull('last_checked_at')->count(),
             'errorCount' => $this->product->urls()->whereNotNull('last_error')->count(),
+            'hasPendingChecks' => $urls->contains(fn ($url) => $url->last_checked_at === null),
         ]);
     }
 }

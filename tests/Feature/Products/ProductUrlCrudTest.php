@@ -1,12 +1,16 @@
 <?php
 
+use App\Jobs\CheckProductUrlPrice;
 use App\Livewire\Products\Show;
 use App\Models\Product;
 use App\Models\ProductUrl;
 use App\Models\User;
+use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;
 
 test('user can add a URL to their product', function () {
+    Queue::fake();
+
     $user = User::factory()->create();
     $product = Product::factory()->for($user)->create();
 
@@ -19,6 +23,10 @@ test('user can add a URL to their product', function () {
 
     expect($product->urls()->count())->toBe(1);
     expect($product->urls()->first()->url)->toBe('https://www.example.com/product');
+
+    Queue::assertPushed(CheckProductUrlPrice::class, function ($job) use ($product) {
+        return $job->productUrl->product_id === $product->id;
+    });
 });
 
 test('URL must be valid', function () {
