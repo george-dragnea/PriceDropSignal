@@ -105,3 +105,48 @@ select:focus[data-flux-control] {
     50% { width: 70%; }
     100% { width: 100%; }
 }
+
+/* Legal page prose typography */
+.legal-prose h2 {
+    @apply mt-10 mb-4 text-xl font-semibold text-zinc-900 dark:text-zinc-100;
+}
+
+.legal-prose h3 {
+    @apply mt-6 mb-3 text-lg font-semibold text-zinc-900 dark:text-zinc-100;
+}
+
+.legal-prose p {
+    @apply mt-4 leading-relaxed text-zinc-700 dark:text-zinc-300;
+}
+
+.legal-prose ul {
+    @apply mt-3 ml-6 list-disc space-y-2 text-zinc-700 dark:text-zinc-300;
+}
+
+.legal-prose li {
+    @apply leading-relaxed;
+}
+
+.legal-prose a {
+    @apply text-brand-600 underline hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300;
+}
+
+.legal-prose strong {
+    @apply font-semibold text-zinc-900 dark:text-zinc-100;
+}
+
+.legal-prose code {
+    @apply rounded bg-zinc-100 px-1.5 py-0.5 text-sm font-mono dark:bg-zinc-800;
+}
+
+.legal-prose table {
+    @apply mt-6 w-full text-sm;
+}
+
+.legal-prose thead th {
+    @apply border-b border-zinc-300 px-4 py-2 text-left font-semibold text-zinc-900 dark:border-zinc-700 dark:text-zinc-100;
+}
+
+.legal-prose tbody td {
+    @apply border-b border-zinc-200 px-4 py-3 text-zinc-700 align-top dark:border-zinc-800 dark:text-zinc-300;
+}

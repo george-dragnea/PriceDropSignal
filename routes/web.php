@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
 
+Route::view('/terms', 'pages.legal.terms')->name('legal.terms');
+Route::view('/privacy', 'pages.legal.privacy')->name('legal.privacy');
+Route::view('/cookies', 'pages.legal.cookies')->name('legal.cookies');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', App\Livewire\Dashboard::class)->name('dashboard');
 

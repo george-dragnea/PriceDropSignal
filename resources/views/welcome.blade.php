@@ -266,13 +266,16 @@
                             {{ config('app.name', 'PriceDropSignal') }}
                         </span>
                     </div>
-                    <div class="flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
+                    <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
                         @if (Route::has('login'))
                             <a href="{{ route('login') }}" class="transition-colors hover:text-zinc-900 dark:hover:text-white" wire:navigate>Log in</a>
                         @endif
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="transition-colors hover:text-zinc-900 dark:hover:text-white" wire:navigate>Register</a>
                         @endif
+                        <a href="{{ route('legal.terms') }}" class="transition-colors hover:text-zinc-900 dark:hover:text-white" wire:navigate>Terms</a>
+                        <a href="{{ route('legal.privacy') }}" class="transition-colors hover:text-zinc-900 dark:hover:text-white" wire:navigate>Privacy</a>
+                        <a href="{{ route('legal.cookies') }}" class="transition-colors hover:text-zinc-900 dark:hover:text-white" wire:navigate>Cookies</a>
                     </div>
                     <p class="text-sm text-zinc-500 dark:text-zinc-400">
                         &copy; {{ date('Y') }} {{ config('app.name', 'PriceDropSignal') }}. All rights reserved.
