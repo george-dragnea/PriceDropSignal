@@ -114,8 +114,8 @@
                     </div>
 
                     {{-- Feature: Instant Alerts --}}
-                    <div class="rounded-xl border border-zinc-200 p-6 transition-colors hover:border-drop-300 dark:border-zinc-800 dark:hover:border-green-700">
-                        <div class="flex size-14 items-center justify-center rounded-xl bg-drop-100 dark:bg-green-900/30">
+                    <div class="rounded-xl border border-zinc-200 p-6 transition-colors hover:border-drop-300 dark:border-zinc-800 dark:hover:border-orange-700">
+                        <div class="flex size-14 items-center justify-center rounded-xl bg-drop-100 dark:bg-orange-900/30">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7 text-drop-600 dark:text-drop-400">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
                             </svg>
