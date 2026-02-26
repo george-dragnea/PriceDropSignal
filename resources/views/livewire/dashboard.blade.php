@@ -121,10 +121,10 @@
                                 <div class="text-right">
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm text-zinc-400 line-through">
-                                            ${{ number_format($change['previous_price_cents'] / 100, 2) }}
+                                            {{ number_format($change['previous_price_cents'] / 100, 2) }}
                                         </span>
                                         <span class="font-mono font-semibold text-green-600 dark:text-green-400">
-                                            ${{ $check->formattedPrice() }}
+                                            {{ $check->formattedPrice() }}
                                         </span>
                                     </div>
                                     <div class="flex items-center justify-end gap-1 text-xs text-green-600 dark:text-green-400">
@@ -167,14 +167,14 @@
                         @foreach ($recentActivity as $check)
                             <div class="flex items-center gap-3 text-sm">
                                 <div class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800">
-                                    <flux:icon name="currency-dollar" variant="micro" class="size-4 text-zinc-500" />
+                                    <flux:icon name="tag" variant="micro" class="size-4 text-zinc-500" />
                                 </div>
                                 <div class="min-w-0 flex-1">
                                     <flux:text class="truncate text-sm">
                                         {{ Str::limit(parse_url($check->productUrl->url, PHP_URL_HOST), 30) }}
                                     </flux:text>
                                     <flux:text class="text-xs text-zinc-400">
-                                        ${{ $check->formattedPrice() }} &middot; {{ $check->checked_at->diffForHumans() }}
+                                        {{ $check->formattedPrice() }} &middot; {{ $check->checked_at->diffForHumans() }}
                                     </flux:text>
                                 </div>
                             </div>

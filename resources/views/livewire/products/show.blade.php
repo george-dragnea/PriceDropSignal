@@ -75,7 +75,7 @@
                             <div class="flex items-center gap-4">
                                 <div class="text-right">
                                     @if ($url->formattedPrice())
-                                        <span class="font-mono text-lg font-semibold">${{ $url->formattedPrice() }}</span>
+                                        <span class="font-mono text-lg font-semibold">{{ $url->formattedPrice() }}</span>
                                         @if ($change && $change['direction'] !== 'same')
                                             <div class="flex items-center justify-end gap-1 text-xs
                                                 {{ $change['direction'] === 'down' ? 'text-green-600 dark:text-green-400' : '' }}
@@ -136,7 +136,7 @@
                                             @endphp
                                             <div class="flex-1 rounded-sm {{ $isFlat ? 'bg-zinc-300 dark:bg-zinc-600' : 'bg-brand-500/70 hover:bg-brand-600 dark:bg-brand-400/60 dark:hover:bg-brand-400' }} transition-all"
                                                  style="height: {{ $heightPercent }}%"
-                                                 title="${{ $check->formattedPrice() }} - {{ $check->checked_at->format('M d, H:i') }}">
+                                                 title="{{ $check->formattedPrice() }} - {{ $check->checked_at->format('M d, H:i') }}">
                                             </div>
                                         @endforeach
                                     </div>
@@ -168,7 +168,7 @@
                                                         </span>
                                                     @endif
                                                 @endif
-                                                <flux:text class="font-mono">${{ $check->formattedPrice() }}</flux:text>
+                                                <flux:text class="font-mono">{{ $check->formattedPrice() }}</flux:text>
                                             </div>
                                         </div>
                                     @endforeach
