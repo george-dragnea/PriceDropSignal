@@ -8,4 +8,5 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::command('prices:check')->twiceDaily('09:07', '18:23');
+Schedule::command('prices:check')->dailyAt('09:07');
+Schedule::command('prices:check')->dailyAt('18:23');
