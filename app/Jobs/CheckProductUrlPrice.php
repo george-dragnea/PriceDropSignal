@@ -10,6 +10,7 @@ use DateTime;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Middleware\RateLimited;
+use Illuminate\Support\Facades\Log;
 
 class CheckProductUrlPrice implements ShouldQueue
 {
@@ -37,6 +38,11 @@ class CheckProductUrlPrice implements ShouldQueue
         $result = $fetcher->fetch($this->productUrl->url);
 
         if ($result['html'] === null) {
+            Log::warning('Price fetch failed', [
+                'url' => $this->productUrl->url,
+                'error' => $result['error'],
+            ]);
+
             $this->productUrl->update([
                 'last_checked_at' => now(),
                 'last_error' => $result['error'],
@@ -48,6 +54,11 @@ class CheckProductUrlPrice implements ShouldQueue
         $priceCents = $extractor->extract($result['html']);
 
         if ($priceCents === null) {
+            Log::warning('Price extraction failed', [
+                'url' => $this->productUrl->url,
+                'error' => 'Could not extract price',
+            ]);
+
             $this->productUrl->update([
                 'last_checked_at' => now(),
                 'last_error' => 'Could not extract price',

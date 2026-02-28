@@ -5,6 +5,7 @@ use App\Models\ProductUrl;
 use App\Notifications\PriceDropNotification;
 use App\Services\PageFetcher;
 use Illuminate\Queue\Middleware\RateLimited;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 function mockFetcher(string $html): void
@@ -81,6 +82,7 @@ test('job does not notify on first price check', function () {
 });
 
 test('job handles fetch errors gracefully', function () {
+    Log::spy();
     mockFetcherError('Navigation timeout');
 
     $url = ProductUrl::factory()->create(['latest_price_cents' => 2999]);
@@ -91,9 +93,16 @@ test('job handles fetch errors gracefully', function () {
     expect($url->last_error)->toBe('Navigation timeout');
     expect($url->last_checked_at)->not->toBeNull();
     expect($url->latest_price_cents)->toBe(2999);
+
+    Log::shouldHaveReceived('warning')->withArgs(function ($message, $context) use ($url) {
+        return $message === 'Price fetch failed'
+            && $context['url'] === $url->url
+            && $context['error'] === 'Navigation timeout';
+    })->once();
 });
 
 test('job handles unparseable pages gracefully', function () {
+    Log::spy();
     mockFetcher('<html><body>No price here</body></html>');
 
     $url = ProductUrl::factory()->create(['latest_price_cents' => 2999]);
@@ -103,6 +112,12 @@ test('job handles unparseable pages gracefully', function () {
     $url->refresh();
     expect($url->last_error)->toBe('Could not extract price');
     expect($url->latest_price_cents)->toBe(2999);
+
+    Log::shouldHaveReceived('warning')->withArgs(function ($message, $context) use ($url) {
+        return $message === 'Price extraction failed'
+            && $context['url'] === $url->url
+            && $context['error'] === 'Could not extract price';
+    })->once();
 });
 
 test('job has rate limited middleware keyed by domain', function () {
