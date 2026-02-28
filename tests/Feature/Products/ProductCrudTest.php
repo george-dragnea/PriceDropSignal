@@ -23,7 +23,8 @@ test('user can add a product', function () {
     Livewire::test(Index::class)
         ->set('newProductName', 'MacBook Pro')
         ->call('addProduct')
-        ->assertHasNoErrors();
+        ->assertHasNoErrors()
+        ->assertRedirect(route('products.show', $user->products()->first()));
 
     expect($user->products()->count())->toBe(1);
     expect($user->products()->first()->name)->toBe('MacBook Pro');

@@ -53,11 +53,7 @@ class Index extends Component
 
         $this->reset('newProductName');
 
-        Flux::toast(
-            heading: __('Product added'),
-            text: __('":name" has been created.', ['name' => $product->name]),
-            variant: 'success',
-        );
+        $this->redirect(route('products.show', $product), navigate: true);
     }
 
     public function deleteProduct(int $productId): void
