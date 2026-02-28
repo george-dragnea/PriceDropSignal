@@ -120,6 +120,20 @@ test('job handles unparseable pages gracefully', function () {
     })->once();
 });
 
+test('job records captcha bot protection error', function () {
+    Log::spy();
+    mockFetcherError('Captcha bot protection');
+
+    $url = ProductUrl::factory()->create(['latest_price_cents' => 2999]);
+
+    CheckProductUrlPrice::dispatchSync($url);
+
+    $url->refresh();
+    expect($url->last_error)->toBe('Captcha bot protection');
+    expect($url->last_checked_at)->not->toBeNull();
+    expect($url->latest_price_cents)->toBe(2999);
+});
+
 test('job has rate limited middleware keyed by domain', function () {
     $url = ProductUrl::factory()->create(['url' => 'https://amazon.com/product/123']);
 

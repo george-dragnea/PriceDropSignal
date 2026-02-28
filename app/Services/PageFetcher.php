@@ -19,7 +19,15 @@ class PageFetcher
         $result = Process::timeout(45)->run(['node', $script, $url]);
 
         if ($result->successful()) {
-            return ['html' => $result->output(), 'error' => null];
+            $html = $result->output();
+
+            if ($this->isCaptchaPage($html)) {
+                Log::warning('PageFetcher blocked by captcha', ['url' => $url]);
+
+                return ['html' => null, 'error' => 'Captcha bot protection'];
+            }
+
+            return ['html' => $html, 'error' => null];
         }
 
         $stderr = trim($result->errorOutput());
@@ -32,5 +40,33 @@ class PageFetcher
         Log::warning('PageFetcher failed', ['url' => $url, 'error' => $errorLine]);
 
         return ['html' => null, 'error' => substr($errorLine, 0, 255)];
+    }
+
+    private function isCaptchaPage(string $html): bool
+    {
+        // Real product pages are typically 50KB+; CAPTCHA block pages are tiny
+        if (strlen($html) > 50000) {
+            return false;
+        }
+
+        $markers = [
+            'captcha-delivery.com',
+            'g-recaptcha',
+            'hcaptcha.com',
+            'challenges.cloudflare.com',
+            'cf-turnstile',
+            'arkoselabs.com',
+            'funcaptcha',
+            'perimeterx.net',
+            'px-captcha',
+        ];
+
+        foreach ($markers as $marker) {
+            if (stripos($html, $marker) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
