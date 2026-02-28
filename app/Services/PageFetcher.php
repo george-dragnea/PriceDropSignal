@@ -44,9 +44,13 @@ class PageFetcher
 
     private function isCaptchaPage(string $html): bool
     {
+        // Real product pages are typically 50KB+; CAPTCHA block pages are tiny
+        if (strlen($html) > 50000) {
+            return false;
+        }
+
         $markers = [
             'captcha-delivery.com',
-            'DataDome',
             'g-recaptcha',
             'hcaptcha.com',
             'challenges.cloudflare.com',

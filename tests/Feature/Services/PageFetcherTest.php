@@ -69,6 +69,22 @@ test('detects captcha via recaptcha', function () {
     expect($result['error'])->toBe('Captcha bot protection');
 });
 
+test('skips captcha detection on large pages to avoid false positives', function () {
+    // A real product page that happens to mention "captcha-delivery.com" in cookie consent
+    $largeHtml = str_repeat('<div>Product content</div>', 5000)
+        .'<span>captcha-delivery.com</span>';
+
+    Process::fake([
+        '*' => Process::result(output: $largeHtml),
+    ]);
+
+    $fetcher = new PageFetcher;
+    $result = $fetcher->fetch('https://example.com/product');
+
+    expect($result['html'])->not->toBeNull();
+    expect($result['error'])->toBeNull();
+});
+
 test('returns html when page is not blocked', function () {
     Process::fake([
         '*' => Process::result(
