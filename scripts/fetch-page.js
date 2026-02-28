@@ -105,7 +105,7 @@ const page = await context.newPage();
 
 try {
     await randomDelay(200, 800);
-    await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+    await page.goto(url, { waitUntil: 'load', timeout: 30000 });
 
     // Wait for a price element to appear (non-blocking — proceed if not found)
     await page.waitForSelector(
