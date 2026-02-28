@@ -47,6 +47,20 @@ test('product name cannot exceed 255 characters', function () {
         ->assertHasErrors(['newProductName' => 'max']);
 });
 
+test('product name cannot contain a URL', function (string $name) {
+    $this->actingAs(User::factory()->create());
+
+    Livewire::test(Index::class)
+        ->set('newProductName', $name)
+        ->call('addProduct')
+        ->assertHasErrors(['newProductName' => 'not_regex']);
+})->with([
+    'http URL' => ['http://example.com'],
+    'https URL' => ['https://amazon.com/product/123'],
+    'www prefix' => ['www.bestbuy.com'],
+    'URL in text' => ['Check https://store.com for deals'],
+]);
+
 test('user can delete their own product', function () {
     $user = User::factory()->create();
     $product = Product::factory()->for($user)->create();

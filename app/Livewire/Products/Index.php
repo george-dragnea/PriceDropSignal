@@ -44,7 +44,9 @@ class Index extends Component
     public function addProduct(): void
     {
         $this->validate([
-            'newProductName' => ['required', 'string', 'max:255'],
+            'newProductName' => ['required', 'string', 'max:255', 'not_regex:/https?:\/\/|www\./i'],
+        ], [
+            'newProductName.not_regex' => __('The product name cannot contain a URL.'),
         ]);
 
         $product = Auth::user()->products()->create(['name' => $this->newProductName]);
