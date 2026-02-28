@@ -22,7 +22,13 @@ class PriceExtractor
             return $price;
         }
 
-        // Strategy 3: Common HTML price patterns
+        // Strategy 3: HTML price patterns with child elements (e.g. eMAG's <sup> tags)
+        $price = $this->extractFromHtmlWithChildElements($html);
+        if ($price !== null) {
+            return $price;
+        }
+
+        // Strategy 4: Common HTML price patterns (text-only)
         return $this->extractFromHtmlPatterns($html);
     }
 
@@ -151,6 +157,28 @@ class PriceExtractor
         foreach ($patterns as $pattern) {
             if (preg_match($pattern, $html, $match)) {
                 $price = $this->parsePriceToCents($match[1]);
+                if ($price !== null) {
+                    return $price;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    protected function extractFromHtmlWithChildElements(string $html): ?int
+    {
+        // Backreference \1 ensures we match the closing tag of the same element type
+        $patterns = [
+            '/<([a-z]+)[^>]*class=["\'][^"\']*product-new-price[^"\']*["\'][^>]*>(.*?)<\/\1>/si',
+            '/<([a-z]+)[^>]*class=["\'][^"\']*price[^"\']*["\'][^>]*>(.*?)<\/\1>/si',
+            '/<([a-z]+)[^>]*id=["\'][^"\']*price[^"\']*["\'][^>]*>(.*?)<\/\1>/si',
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $html, $match)) {
+                $textContent = strip_tags($match[2]);
+                $price = $this->parsePriceToCents(trim($textContent));
                 if ($price !== null) {
                     return $price;
                 }
