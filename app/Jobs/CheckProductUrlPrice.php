@@ -54,14 +54,19 @@ class CheckProductUrlPrice implements ShouldQueue
         $priceCents = $extractor->extract($result['html']);
 
         if ($priceCents === null) {
+            $htmlLength = strlen($result['html']);
+            $snippet = mb_substr(strip_tags($result['html']), 0, 300);
+
             Log::warning('Price extraction failed', [
                 'url' => $this->productUrl->url,
                 'error' => 'Could not extract price',
+                'html_length' => $htmlLength,
+                'html_snippet' => $snippet,
             ]);
 
             $this->productUrl->update([
                 'last_checked_at' => now(),
-                'last_error' => 'Could not extract price',
+                'last_error' => "Could not extract price (HTML size: {$htmlLength} bytes)",
             ]);
 
             return;

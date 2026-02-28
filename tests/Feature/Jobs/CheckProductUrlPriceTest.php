@@ -110,13 +110,15 @@ test('job handles unparseable pages gracefully', function () {
     CheckProductUrlPrice::dispatchSync($url);
 
     $url->refresh();
-    expect($url->last_error)->toBe('Could not extract price');
+    expect($url->last_error)->toStartWith('Could not extract price (HTML size:');
     expect($url->latest_price_cents)->toBe(2999);
 
     Log::shouldHaveReceived('warning')->withArgs(function ($message, $context) use ($url) {
         return $message === 'Price extraction failed'
             && $context['url'] === $url->url
-            && $context['error'] === 'Could not extract price';
+            && $context['error'] === 'Could not extract price'
+            && isset($context['html_length'])
+            && isset($context['html_snippet']);
     })->once();
 });
 

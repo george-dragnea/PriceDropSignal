@@ -1,9 +1,4 @@
 import { chromium } from 'playwright';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { mkdir } from 'fs/promises';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const url = process.argv[2];
 
@@ -18,10 +13,28 @@ function randomDelay(min, max) {
     );
 }
 
-const userDataDir = join(__dirname, '..', 'storage', 'app', 'private', 'browser-profile');
-await mkdir(userDataDir, { recursive: true });
+// User agent pool — rotate per request to reduce fingerprinting.
+// Last updated: 2026-02-28
+const userAgents = [
+    // Chrome on Windows
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
+    // Chrome on Mac
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
+    // Firefox on Windows
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0',
+    // Edge on Windows
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36 Edg/133.0.0.0',
+];
 
-const context = await chromium.launchPersistentContext(userDataDir, {
+const selectedUserAgent = userAgents[Math.floor(Math.random() * userAgents.length)];
+const isMac = selectedUserAgent.includes('Macintosh');
+
+const browser = await chromium.launch({
     headless: true,
     args: [
         '--disable-blink-features=AutomationControlled',
@@ -29,10 +42,13 @@ const context = await chromium.launchPersistentContext(userDataDir, {
         '--no-default-browser-check',
         '--disable-component-update',
     ],
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
+});
+
+const context = await browser.newContext({
+    userAgent: selectedUserAgent,
     locale: 'en-US',
     viewport: { width: 1920, height: 1080 },
-    timezoneId: 'America/New_York',
+    timezoneId: isMac ? 'America/New_York' : 'Europe/Bucharest',
     colorScheme: 'light',
     screen: { width: 1920, height: 1080 },
 });
@@ -71,7 +87,7 @@ await context.addInitScript(() => {
         get: () => ['en-US', 'en'],
     });
 
-    // Realistic hardware for a Mac
+    // Realistic hardware
     Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => 8 });
     Object.defineProperty(navigator, 'deviceMemory', { get: () => 8 });
 
@@ -85,13 +101,19 @@ await context.addInitScript(() => {
     };
 });
 
-const page = context.pages()[0] || await context.newPage();
+const page = await context.newPage();
 
 try {
     await randomDelay(200, 800);
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    // Wait for dynamic pricing to render (randomized to appear more natural)
-    await randomDelay(1500, 3500);
+    await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+
+    // Wait for a price element to appear (non-blocking — proceed if not found)
+    await page.waitForSelector(
+        '[itemprop="price"], .product-new-price, .price, [class*="price"]',
+        { timeout: 5000 }
+    ).catch(() => {});
+
+    await randomDelay(500, 1500);
     const html = await page.content();
     process.stdout.write(html);
 } catch (err) {
@@ -99,4 +121,5 @@ try {
     process.exit(2);
 } finally {
     await context.close();
+    await browser.close();
 }

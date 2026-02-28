@@ -78,6 +78,30 @@ test('extracts price from HTML class pattern', function () {
     expect($this->extractor->extract($html))->toBe(14999);
 });
 
+test('extracts price from eMAG product-new-price with sup tag', function () {
+    $html = '<html><body><p class="product-new-price">49<sup>,42</sup> Lei</p></body></html>';
+
+    expect($this->extractor->extract($html))->toBe(4942);
+});
+
+test('extracts price from product-new-price with span children', function () {
+    $html = '<html><body><p class="product-new-price"><span class="integer">1.299</span><span class="decimal">,99</span> Lei</p></body></html>';
+
+    expect($this->extractor->extract($html))->toBe(129999);
+});
+
+test('extracts price from element with price class containing nested tags', function () {
+    $html = '<html><body><div class="current-price"><span>29</span><sup>,99</sup> RON</div></body></html>';
+
+    expect($this->extractor->extract($html))->toBe(2999);
+});
+
+test('extracts price from product-new-price without child elements', function () {
+    $html = '<html><body><p class="product-new-price">149,99 Lei</p></body></html>';
+
+    expect($this->extractor->extract($html))->toBe(14999);
+});
+
 test('returns null when no price found', function () {
     $html = '<html><body><p>No pricing information here</p></body></html>';
 
