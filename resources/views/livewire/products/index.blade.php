@@ -48,49 +48,51 @@
     @else
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($products as $product)
-                <a href="{{ route('products.show', $product) }}" wire:navigate wire:key="product-{{ $product->id }}"
-                   class="group block rounded-xl border border-neutral-200 p-5 transition-colors hover:border-brand-300 hover:bg-zinc-50/50 dark:border-neutral-700 dark:hover:border-brand-700 dark:hover:bg-zinc-800/30">
-                    {{-- Top row: name + delete --}}
-                    <div class="mb-3 flex items-start justify-between">
-                        <span class="font-semibold text-zinc-900 group-hover:text-brand-600 dark:text-zinc-100 dark:group-hover:text-brand-400">
-                            {{ $product->name }}
-                        </span>
-                        <flux:modal.trigger name="delete-product-{{ $product->id }}">
-                            <flux:button variant="ghost" size="sm" icon="trash"
-                                class="relative z-10 opacity-0 transition-opacity group-hover:opacity-100"
-                                :aria-label="__('Delete :name', ['name' => $product->name])"
-                                x-on:click.prevent.stop />
-                        </flux:modal.trigger>
+                <div wire:key="product-{{ $product->id }}" class="group relative rounded-xl border border-neutral-200 transition-colors hover:border-brand-300 hover:bg-zinc-50/50 dark:border-neutral-700 dark:hover:border-brand-700 dark:hover:bg-zinc-800/30">
+                    {{-- Delete button (outside the link) --}}
+                    <div class="absolute top-5 right-5 z-10 opacity-0 transition-opacity group-hover:opacity-100">
+                        <flux:button variant="ghost" size="sm" icon="trash"
+                            :aria-label="__('Delete :name', ['name' => $product->name])"
+                            x-on:click="$flux.modal('delete-product-{{ $product->id }}').show()" />
                     </div>
 
-                    {{-- Stats row --}}
-                    <div class="mb-3 flex items-center gap-2">
-                        <flux:badge size="sm" color="zinc">
-                            {{ $product->urls_count }} {{ str('URL')->plural($product->urls_count) }}
-                        </flux:badge>
-                        @if ($product->has_errors)
-                            <flux:badge size="sm" color="red">{{ __('Errors') }}</flux:badge>
-                        @endif
-                    </div>
+                    <a href="{{ route('products.show', $product) }}" wire:navigate class="block p-5">
+                        {{-- Top row: name --}}
+                        <div class="mb-3 pr-8">
+                            <span class="font-semibold text-zinc-900 group-hover:text-brand-600 dark:text-zinc-100 dark:group-hover:text-brand-400">
+                                {{ $product->name }}
+                            </span>
+                        </div>
 
-                    {{-- Price range --}}
-                    @if ($product->urls_min_latest_price_cents)
-                        <flux:text class="mb-2 font-mono text-sm">
-                            @if ($product->urls_min_latest_price_cents === $product->urls_max_latest_price_cents)
-                                {{ number_format($product->urls_min_latest_price_cents / 100, 2) }}
-                            @else
-                                {{ number_format($product->urls_min_latest_price_cents / 100, 2) }} &ndash; {{ number_format($product->urls_max_latest_price_cents / 100, 2) }}
+                        {{-- Stats row --}}
+                        <div class="mb-3 flex items-center gap-2">
+                            <flux:badge size="sm" color="zinc">
+                                {{ $product->urls_count }} {{ str('URL')->plural($product->urls_count) }}
+                            </flux:badge>
+                            @if ($product->has_errors)
+                                <flux:badge size="sm" color="red">{{ __('Errors') }}</flux:badge>
                             @endif
-                        </flux:text>
-                    @else
-                        <flux:text class="mb-2 text-sm text-zinc-400">{{ __('No prices yet') }}</flux:text>
-                    @endif
+                        </div>
 
-                    {{-- Footer: date added --}}
-                    <flux:text class="text-xs text-zinc-400">
-                        {{ __('Added') }} {{ $product->created_at->diffForHumans() }}
-                    </flux:text>
-                </a>
+                        {{-- Price range --}}
+                        @if ($product->urls_min_latest_price_cents)
+                            <flux:text class="mb-2 font-mono text-sm">
+                                @if ($product->urls_min_latest_price_cents === $product->urls_max_latest_price_cents)
+                                    {{ number_format($product->urls_min_latest_price_cents / 100, 2) }}
+                                @else
+                                    {{ number_format($product->urls_min_latest_price_cents / 100, 2) }} &ndash; {{ number_format($product->urls_max_latest_price_cents / 100, 2) }}
+                                @endif
+                            </flux:text>
+                        @else
+                            <flux:text class="mb-2 text-sm text-zinc-400">{{ __('No prices yet') }}</flux:text>
+                        @endif
+
+                        {{-- Footer: date added --}}
+                        <flux:text class="text-xs text-zinc-400">
+                            {{ __('Added') }} {{ $product->created_at->diffForHumans() }}
+                        </flux:text>
+                    </a>
+                </div>
             @endforeach
         </div>
 
