@@ -1,9 +1,10 @@
 import { chromium } from 'playwright';
 
 const url = process.argv[2];
+const waitUntil = process.argv[3] || 'load';
 
 if (!url) {
-    process.stderr.write('Usage: node fetch-page.js <url>\n');
+    process.stderr.write('Usage: node fetch-page.js <url> [load|networkidle]\n');
     process.exit(1);
 }
 
@@ -105,7 +106,7 @@ const page = await context.newPage();
 
 try {
     await randomDelay(200, 800);
-    await page.goto(url, { waitUntil: 'load', timeout: 30000 });
+    await page.goto(url, { waitUntil, timeout: 30000 });
 
     // Wait for a price element to appear (non-blocking — proceed if not found)
     await page.waitForSelector(
