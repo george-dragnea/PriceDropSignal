@@ -7,6 +7,19 @@ use Illuminate\Support\Facades\Process;
 
 class PageFetcher
 {
+    /** @var array<string, string> */
+    private const CAPTCHA_MARKERS = [
+        'captcha-delivery.com' => 'DataDome',
+        'g-recaptcha' => 'reCAPTCHA',
+        'hcaptcha.com' => 'hCaptcha',
+        'challenges.cloudflare.com' => 'Cloudflare',
+        'cf-turnstile' => 'Cloudflare',
+        'arkoselabs.com' => 'Arkose',
+        'funcaptcha' => 'Arkose',
+        'perimeterx.net' => 'PerimeterX',
+        'px-captcha' => 'PerimeterX',
+    ];
+
     /**
      * Fetch the HTML content of a URL using a headless browser.
      *
@@ -18,6 +31,8 @@ class PageFetcher
 
         if ($result['error'] === 'Captcha bot protection' || $result['error'] === 'Bot detection (page too small)') {
             Log::info('PageFetcher retrying with networkidle', ['url' => $url, 'reason' => $result['error']]);
+
+            usleep(random_int(3_000_000, 5_000_000));
 
             $result = $this->attemptFetch($url, 'networkidle');
         }
@@ -37,8 +52,13 @@ class PageFetcher
         if ($result->successful()) {
             $html = $result->output();
 
-            if ($this->isCaptchaPage($html)) {
-                Log::warning('PageFetcher blocked by captcha', ['url' => $url, 'wait_until' => $waitUntil]);
+            $captchaProvider = $this->detectCaptchaProvider($html);
+            if ($captchaProvider !== null) {
+                Log::warning('PageFetcher blocked by captcha', [
+                    'url' => $url,
+                    'wait_until' => $waitUntil,
+                    'provider' => $captchaProvider,
+                ]);
 
                 return ['html' => null, 'error' => 'Captcha bot protection'];
             }
@@ -66,36 +86,26 @@ class PageFetcher
 
     private function isBotBlockPage(string $html): bool
     {
-        // Real product pages are typically 50KB+; a page under 10KB
-        // with no recognizable CAPTCHA is likely a bot detection stub.
         return strlen($html) < 10000;
     }
 
-    private function isCaptchaPage(string $html): bool
+    /**
+     * Detect the CAPTCHA provider from HTML content.
+     * Returns the provider name if detected, null otherwise.
+     */
+    private function detectCaptchaProvider(string $html): ?string
     {
         // Real product pages are typically 50KB+; CAPTCHA block pages are tiny
         if (strlen($html) > 50000) {
-            return false;
+            return null;
         }
 
-        $markers = [
-            'captcha-delivery.com',
-            'g-recaptcha',
-            'hcaptcha.com',
-            'challenges.cloudflare.com',
-            'cf-turnstile',
-            'arkoselabs.com',
-            'funcaptcha',
-            'perimeterx.net',
-            'px-captcha',
-        ];
-
-        foreach ($markers as $marker) {
+        foreach (self::CAPTCHA_MARKERS as $marker => $provider) {
             if (stripos($html, $marker) !== false) {
-                return true;
+                return $provider;
             }
         }
 
-        return false;
+        return null;
     }
 }

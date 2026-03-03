@@ -29,7 +29,8 @@ test('detects captcha and retries with networkidle', function () {
 
     Log::shouldHaveReceived('warning')->withArgs(function ($message, $context) {
         return $message === 'PageFetcher blocked by captcha'
-            && $context['url'] === 'https://example.com/product';
+            && $context['url'] === 'https://example.com/product'
+            && $context['provider'] === 'DataDome';
     })->twice();
 
     Log::shouldHaveReceived('info')->withArgs(function ($message, $context) {
@@ -130,6 +131,40 @@ test('detects bot block on small pages without captcha markers', function () {
 
     expect($result['html'])->toBeNull();
     expect($result['error'])->toBe('Bot detection (page too small)');
+});
+
+test('logs specific captcha provider when detected', function () {
+    Log::spy();
+    $captchaHtml = '<html><body><script src="https://ct.captcha-delivery.com/i.js"></script></body></html>';
+
+    Process::fake([
+        '*' => Process::result(output: $captchaHtml),
+    ]);
+
+    $fetcher = new PageFetcher;
+    $result = $fetcher->fetch('https://example.com/product');
+
+    Log::shouldHaveReceived('warning')->withArgs(function ($message, $context) {
+        return $message === 'PageFetcher blocked by captcha'
+            && $context['provider'] === 'DataDome';
+    })->atLeast()->once();
+});
+
+test('logs cloudflare as captcha provider', function () {
+    Log::spy();
+    $captchaHtml = '<html><body><div class="cf-turnstile"></div></body></html>';
+
+    Process::fake([
+        '*' => Process::result(output: $captchaHtml),
+    ]);
+
+    $fetcher = new PageFetcher;
+    $result = $fetcher->fetch('https://example.com/product');
+
+    Log::shouldHaveReceived('warning')->withArgs(function ($message, $context) {
+        return $message === 'PageFetcher blocked by captcha'
+            && $context['provider'] === 'Cloudflare';
+    })->atLeast()->once();
 });
 
 test('returns html when page is not blocked', function () {
